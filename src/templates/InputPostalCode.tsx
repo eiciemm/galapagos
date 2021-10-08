@@ -44,9 +44,14 @@ const ButtonWrapper = styled.div`
   margin-left: 8px;
 `;
 
-// const InputPostalCode = props => {
-const InputPostalCode: React.FC<Props> = ({ inputPostalAreaCode, inputLocalAreaCode, postalAreaCode, localAreaCode, isSearchClickable, onClickSearchBtn }) => {
-//   const { inputPostalAreaCode, inputLocalAreaCode, postalAreaCode, localAreaCode, isSearchClickable, onClickSearchBtn } = props;
+const InputPostalCode: React.FC<Props> = ({
+  inputPostalAreaCode,
+  inputLocalAreaCode,
+  postalAreaCode,
+  localAreaCode,
+  isSearchClickable,
+  onClickSearchBtn
+}) => {
   return (
     <Wrapper>
       <InputWrapper>

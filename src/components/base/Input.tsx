@@ -15,9 +15,7 @@ const InputBox = styled.input`
   letter-spacing: 1px;
 `;
 
-// const Input = props => {
 const Input: React.FC<Props> = ({ maxlength, handleInput, className, value }) => {
-//   const { maxlength, handleInput, className, value } = props;
   return (
     <>
       <InputBox type="text" maxLength={maxlength ?? undefined} value={value} className={className} onChange={handleInput} />

@@ -15,7 +15,6 @@ const Wrapper = styled.div`
   color: ${Colors.white};
 `;
 
-// const ErrorMessage = props => {
 const ErrorMessage: React.FC<Props> = ({ className, innerText}) => {
   return (
     <Wrapper className={className}>

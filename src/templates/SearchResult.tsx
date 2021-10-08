@@ -37,7 +37,6 @@ const StyledInput = styled(Input)`
   padding-left: 8px;
 `;
 
-// const SearchResult = props => {
 const SearchResult: React.FC<Props> = ({
   inputAddress1,
   inputAddress2,
@@ -46,15 +45,6 @@ const SearchResult: React.FC<Props> = ({
   address2,
   address3
 }) => {
-
-//   const {
-//     inputAddress1,
-//     inputAddress2,
-//     inputAddress3,
-//     address1,
-//     address2,
-//     address3
-//   } = props;
 
   return (
     <Wrapper>
