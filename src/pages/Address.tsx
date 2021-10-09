@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import InputPostalCode from "../templates/InputPostalCode";
 import ErrorMessage from "../components/ErrorMessage";
 import SearchResult from "../templates/SearchResult";
-import { POSTAL_AREA_CODE_LENGTH, LOCAL_AREA_CODE_LENGTH } from '../constants';
-import { API } from '../api/API';
+import useInputPostalCode from './useInputPostalCode';
+import useSearch from './useSearch';
 
 const Wrapper = styled.div`
   width: 92%;
@@ -27,77 +27,31 @@ const Loading = styled.div`
 `;
 
 const Address: React.FC = () => {
-  const [postalAreaCode, setPostalAreaCode] = useState<string>('');
-  const [localAreaCode, setLocalAreaCode] = useState<string>('');
-  const [isInputModeError, setIsInputModeError] = useState(false);
-  const [isInvalidPostalCode, setIsInvalidPostalCode] = useState(false);
+  const [
+    inputPostalAreaCode,
+    inputLocalAreaCode,
+    postalAreaCode,
+    localAreaCode,
+    isSearchClickable,
+    isInputModeError,
+    inputModeErrorMessage
+  ] = useInputPostalCode();
 
-  const [isSearchClickable, setIsSearchClickable] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [address1, setAddress1] = useState<string>('');
-  const [address2, setAddress2] = useState<string>('');
-  const [address3, setAddress3] = useState<string>('');
-
-  useEffect(() =>{
-    if (postalAreaCode.length === POSTAL_AREA_CODE_LENGTH && localAreaCode.length === LOCAL_AREA_CODE_LENGTH) {
-      setIsSearchClickable(true);
-    } else {
-      setIsSearchClickable(false);
-    }
-  },[postalAreaCode, localAreaCode]);
-
-  const searchAddress = async () => {
-    setIsLoading(true);
-    setIsInvalidPostalCode(false)
-
-    const fullPostalCode = postalAreaCode + localAreaCode;
-    const response = await API.Address.get(fullPostalCode);
-
-    if (response.status === 200) {
-      setAddress1(response.results[0].address1);
-      setAddress2(response.results[0].address2);
-      setAddress3(response.results[0].address3);
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
-      setIsInvalidPostalCode(true);
-    }
-  }
-
-  const inputPostalAreaCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    checkInputMode(e.target.value);
-    setPostalAreaCode(e.target.value);
-  }
-
-  const inputLocalAreaCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    checkInputMode(e.target.value);
-    setLocalAreaCode(e.target.value);
-  }
-
-  const checkInputMode = (inputValue: string) => {
-    const isError = isNaN(Number(inputValue));
-    if (isError) {
-      setIsInputModeError(true);
-    } else {
-      setIsInputModeError(false);
-    }
-  }
-
-  const inputAddress1 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress1(e.target.value);
-  }
-
-  const inputAddress2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress2(e.target.value);
-  }
-
-  const inputAddress3 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress3(e.target.value);
-  }
+  const [
+    address1,
+    address2,
+    address3,
+    isLoading,
+    isInvalidPostalCode,
+    invalidPostalCodeMessage,
+    searchAddress,
+    inputAddress1,
+    inputAddress2,
+    inputAddress3
+  ] =useSearch(postalAreaCode, localAreaCode);
 
   const isErrorShown = isInputModeError || isInvalidPostalCode;
-  const errorMessage = isInputModeError ? "半角数字で入力してください" : "無効な郵便番号です";
+  const errorMessage = isInputModeError ? inputModeErrorMessage : invalidPostalCodeMessage;
 
   return (
     <Wrapper>
@@ -130,4 +84,4 @@ const Address: React.FC = () => {
   );
 };
 
-export default Address;
+export default React.memo(Address);
