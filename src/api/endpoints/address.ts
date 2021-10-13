@@ -6,5 +6,6 @@ export const Address = {
   get: (inputPostalCode: string) => {
     return fetchJsonp(`${API_ENDPOINT}?zipcode=${inputPostalCode}`)
       .then((res) => res.json())
+      .catch((error) => console.error(error))
   }
 };
